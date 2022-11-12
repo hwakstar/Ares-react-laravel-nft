@@ -10,13 +10,13 @@ import Headereight from "../images/content/opensea.svg";
 import logo from "../images/content/logo.svg";
 export default function Header(props) {  
   return (     
-    <header >
-      <div className="container">
-        <nav className="navbar">
-          <div className="navbar-left">
-            <ul className="navbar-menu">
-              <li>
-                  
+        <header>
+            <div className="container">
+                <nav className="navbar">
+                    <div className="navbar-left">
+                        <ul className="navbar-menu">
+                            <li>
+
                 <a href="/about" id="aboutjs" className={props.about}>About Us</a>
                  
                 
