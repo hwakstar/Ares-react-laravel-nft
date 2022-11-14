@@ -11,41 +11,40 @@ import Headerseven from "../images/content/facebook.svg";
 import Headereight from "../images/content/opensea.svg";
 import logo from "../images/content/logo.svg";
 
-export default function Header() {
+export default function Header(props) {
 
   return (
     <header>
       <div className="container">
         <nav className="navbar">
-          <div className="navbar-left">
-            <ul className="navbar-menu">
-              <li>
-                <a href="/about" id="aboutjs">
-                  About Us
-                </a>
+        <div className="navbar-left">
+                        <ul className="navbar-menu">
+                            <li>
+
+                <a href="/about" id="aboutjs" className={props.about}>About Us</a>
+                 
+                
               </li>
               <li>
-                <a href="/edition" id="edit">
-                  Edition
+                <a href="/edition" id="edit" className={props.edition}>Edition</a>
+            </li>
+               <li className="dropdown">
+                <a  data-dropdown className={[props.advantage,props.aresnft].join(" ")}>
+                  {" "}
+                  NFT{" "}
                 </a>
-              </li>
-              <li className="dropdown">
-                <a data-dropdown> NFT </a>
                 <ul className="dropdown-menu">
-                  <li>
-                    <a href="/aresnft">AresNFT</a>
+                  <li >
+                  <a href="/aresnft" >AresNFT</a>
                   </li>
                   <li>
-                    <a href="/advantage">Advantage</a>
+                  <a href="/advantage" > Advantage</a>                   
                   </li>
                 </ul>
               </li>
               <li>
-                <a href="/investment">Investment</a>
-              </li>
-              <li className="wallet-connect-li">
-                <ConnectWallet />
-              </li>
+              <a href="/investment"  className={props.investment}>Investment</a>
+               </li>
             </ul>
           </div>
           <div className="navbar-middle">

@@ -324,7 +324,7 @@ export default function App() {
                                                         <input type="email" id="email" name="email"
                                                             value={email}
                                                             className="form-control"
-                                                            placeholder=" E-mail"
+                                                            placeholder="E-mail"
                                                             onChange=
                                                             {(e) => handleInputChange(e)}/>
                                                     </div>
@@ -335,7 +335,7 @@ export default function App() {
                                                         <input type="text" id="zip" name="zip"
                                                             value={zip}
                                                             className="form-control"
-                                                            placeholder="zip"
+                                                            placeholder="zip code"
                                                             onChange=
                                                             {(e) => handleInputChange(e)}/>
                                                     </div>
