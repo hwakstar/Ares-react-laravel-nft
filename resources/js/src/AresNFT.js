@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, useCallback} from "react";
 import gold from "./images/content/aresnft-coming-soon-gold.svg";
 import nft from "./images/content/the-rise-of-ares-nft.svg";
 import slider4 from "./images/content/ares-nft-slider-4.png";
@@ -19,19 +19,81 @@ import Red from "./images/content/T-Shit-Baseball-Cap-Red.png";
 import Footer from "./components/Footer";
 import logo from "./images/content/logo.svg";
 import modaltilte from "./images/content/mint-your-ares-nft-title.svg";
-import aresnft from "./images/content/mint-your-ares-nft-1.png";
+import nft1 from "./images/content/mint-your-ares-nft-1.png";
 import nftshape from "./images/content/mint-your-ares-nft-shape.png";
 import Header from "./components/Header";
-import loader from "./images/content/logo-loader.svg" 
+import loader from "./images/content/logo-loader.svg";
+import ConnectWalletModal from "./components/connectWallet/ConnectWalletModal";
+import { useWeb3React } from "@web3-react/core";
+import { getUserData, mint } from "./utils/web3Utils";
+import { CONTRACT_STATE } from "./config/constants"; 
 export default function AresNFT() {
+    const [modalState, setModalState] = useState(false);
+    const [mintAmount, setMintAmount] = useState(1)
+    const [userData, setUserData] = useState(undefined)
+    const [contractState, setContractState] = useState(0)
+    const { account, library } = useWeb3React();
+    const handleUserData = useCallback(
+        async () => {
+            const { status, _whiteListed, _constractState, _userBalance, _maxMintable } = await getUserData(account, library?.provider)
+            if (status) {
+                setUserData({
+                    whiteListed: _whiteListed,
+                    balance: Number(_userBalance),
+                    maxMintable: _maxMintable
+                })
+                setContractState(_constractState)
+            }
+        },
+        [account, library],
+    )
+    useEffect(() => {
+        if (!account || !library) return
+        handleUserData(account, library)
+        const timer = setInterval(() => {
+            handleUserData(account, library)
+        }, 15000)
+        return () => { clearInterval(timer) }
+    }, [account, library, handleUserData])
+    const connectWallet = () => {
+        setModalState(true)
+    }
+    let mintable = false
+    if (userData && userData.whiteListed && userData.maxMintable - userData.balance && contractState > CONTRACT_STATE.OFF) mintable = true
+    if (userData && !userData.whiteListed && userData.maxMintable - userData.balance && contractState > CONTRACT_STATE.WHITELIST) mintable = true
+    const handleMint = async () => {
+        let result
+        if (userData && userData.whiteListed && userData.maxMintable - userData.balance > 0 && contractState === CONTRACT_STATE.WHITELIST) {
+            result = await mint(mintAmount, account, library.provider, CONTRACT_STATE.WHITELIST)
+        }
+        if (userData && userData.maxMintable - userData.balance > 0 && contractState === CONTRACT_STATE.PRESALE) {
+            result = await mint(mintAmount, account, library.provider, CONTRACT_STATE.PRESALE)
+        }
+        if (userData && userData.maxMintable - userData.balance > 0 && contractState === CONTRACT_STATE.PUBLIC) {
+            result = await mint(mintAmount, account, library.provider, CONTRACT_STATE.PUBLIC)
+        }
+        console.log(result)
+    }
+    const addAmount = () => {
+        if (mintAmount >= userData.maxMintable - userData.balance) return
+        setMintAmount(mintAmount + 1)
+    }
+    const reduceAmount = () => {
+        if (mintAmount === 1) return
+        setMintAmount(mintAmount - 1)
+    }
     return (
-        <>
+        <> {modalState && (
+            <ConnectWalletModal
+                changeWalletListModalState={setModalState}
+            />
+        )}
          <div class="loading">
         <div class="loading-logo"><img src={loader} class="img-fluid" alt="Ares Corporation" />
         </div>       
     </div>
     <Header aresnft="active"/>
-            <div className="modal" id="mint-your-ares-modal">
+    <div className="modal" id="mint-your-ares-modal">
                 <div className="modal-close">
                     <a
                         href="#"
@@ -44,12 +106,12 @@ export default function AresNFT() {
                 <div className="modal-content">
                     <div className="modal-content-grid">
                         <div className="modal-content-grid-left">
-                            <img src={logo} className="img-fluid" alt="ARES" />
-                            <img
-                                src={modaltilte}
+                            <img src={logo}
+                                className="img-fluid"
+                                alt="ARES"/>
+                            <img src={modaltilte}
                                 className="title img-fluid"
-                                alt=""
-                            />
+                                alt=""/>
                             <div className="counter">
                                 <div className="counter-item">
                                     <div className="counter-item-days">
@@ -78,52 +140,67 @@ export default function AresNFT() {
                             </div>
                             <p>
                                 Ares-NFT phase 1 will consist of rare, super
-                                rare and legendary NFTs, which is all determined
-                                by the kinds of traits and backgrounds that your
-                                Ares NFT will have. All buyers will become
-                                members. Mint yours now!
+                                                                rare and legendary NFTs, which is all determined
+                                                                by the kinds of traits and backgrounds that your
+                                                                Ares NFT will have. All buyers will become
+                                                                members. Mint yours now!
                             </p>
                             <div className="nft-form">
+                            {
+                                        mintAmount > 2 && <Alert variant="filled" severity="error">
+                                            you cannot mint more than 3 nfts
+                                        </Alert>
+                                    }
                                 <div className="nft-form-top">
                                     <div className="nft-form-m">
-                                        <a href="#">
+                                        <button onClick={reduceAmount}
+                                            disabled={
+                                                ! mintable
+                                        }>
                                             <i className="fa-solid fa-minus"></i>
-                                        </a>
+                                        </button>
                                     </div>
                                     <div className="nft-form-value">
-                                        <input
-                                            id="nft-form-val"
-                                            name="nft-form-val"
-                                            value="1"
-                                            min="1"
-                                            max="3"
-                                        />{" "}
+                                        <input id="nft-form-val" name="nft-form-val"
+                                            value={mintAmount}/>{" "}
                                         NFT
                                     </div>
                                     <div className="nft-form-p">
-                                        <a href="#">
+                                        <button onClick={addAmount}
+                                            disabled={
+                                                ! mintable
+                                        }>
                                             <i className="fa-solid fa-plus"></i>
-                                        </a>
+                                        </button>
+
                                     </div>
                                 </div>
                                 <div className="nft-form-bottom">
-                                    <a href="#" className="btn btn-primary">
-                                        Connect your wallet
-                                    </a>
-                                </div>
+                                    {
+                                    account ? (
+                                        <button onClick={handleMint}
+                                            className="btn btn-primary"
+                                            disabled={
+                                                ! mintable
+                                        }>
+                                            Mint
+                                        </button>
+                                    ) : (
+                                        <button onClick={connectWallet}
+                                            className="btn btn-primary">
+                                            Connect your wallet
+                                        </button>
+                                    )
+                                } </div>
                             </div>
                         </div>
                         <div className="modal-content-grid-right">
-                            <img
-                                src={aresnft}
+                            <img src={nft1}
                                 className="img-fluid"
-                                alt=""
-                            />{" "}
-                            <img
-                                src={nftshape}
+                                alt=""/>{" "}
+                            <img src={nftshape}
                                 className="img-fluid shape"
-                                alt=""
-                            />
+                                alt=""/>
                         </div>
                     </div>
                 </div>
@@ -157,7 +234,7 @@ export default function AresNFT() {
                                 <div className="col-lg-5 align-self-center">
                                     <img
                                         src={nft}
-                                        className="has-animation-fade-in img-fluid mb-3"
+                                        className="has-animation-fade-in img-fluid mb-2"
                                         alt=""
                                     />
                                     <p className="has-animation-text">

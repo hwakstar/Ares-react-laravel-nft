@@ -1,4 +1,6 @@
 import React from "react";
+
+import ConnectWallet from "../components/connectWallet/ConnectWallet";
 import Headerone from "../images/content/twitter.svg";
 import Headertwo from "../images/content/instagram.svg";
 import Headerthree from "../images/content/discord.svg";
@@ -8,39 +10,42 @@ import Headersix from "../images/content/linkedin.svg";
 import Headerseven from "../images/content/facebook.svg";
 import Headereight from "../images/content/opensea.svg";
 import logo from "../images/content/logo.svg";
-export default function Header(props) {  
-  return (     
-        <header>
-            <div className="container">
-                <nav className="navbar">
-                    <div className="navbar-left">
-                        <ul className="navbar-menu">
-                            <li>
 
-                <a href="/about" id="aboutjs" className={props.about}>About Us</a>
-                 
-                
+export default function Header() {
+
+  return (
+    <header>
+      <div className="container">
+        <nav className="navbar">
+          <div className="navbar-left">
+            <ul className="navbar-menu">
+              <li>
+                <a href="/about" id="aboutjs">
+                  About Us
+                </a>
               </li>
               <li>
-                <a href="/edition" id="edit" className={props.edition}>Edition</a>
-            </li>
-               <li className="dropdown">
-                <a  data-dropdown className={[props.advantage,props.aresnft].join(" ")}>
-                  {" "}
-                  NFT{" "}
+                <a href="/edition" id="edit">
+                  Edition
                 </a>
+              </li>
+              <li className="dropdown">
+                <a data-dropdown> NFT </a>
                 <ul className="dropdown-menu">
-                  <li >
-                  <a href="/aresnft" >AresNFT</a>
+                  <li>
+                    <a href="/aresnft">AresNFT</a>
                   </li>
                   <li>
-                  <a href="/advantage" > Advantage</a>                   
+                    <a href="/advantage">Advantage</a>
                   </li>
                 </ul>
               </li>
               <li>
-              <a href="/investment"  className={props.investment}>Investment</a>
-               </li>
+                <a href="/investment">Investment</a>
+              </li>
+              <li className="wallet-connect-li">
+                <ConnectWallet />
+              </li>
             </ul>
           </div>
           <div className="navbar-middle">
@@ -51,9 +56,9 @@ export default function Header(props) {
               </a>
             </div>
             <div className="navbar-middle-item">
-            <a href="/">
+              <a href="/">
                 <img src={logo} className="img-fluid" alt="ARES" />
-                </a>
+              </a>
             </div>
             <div className="navbar-middle-item">
               <a href="#" className="nav-socials-toggle">
@@ -182,10 +187,13 @@ export default function Header(props) {
                 </a>
               </li>
             </ul>
+             
+             <ConnectWallet />
+              
+              
           </div>
         </nav>
       </div>
     </header>
-   );
- 
+  );
 }

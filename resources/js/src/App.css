@@ -92,3 +92,203 @@
   .claim {
     background-image: url("images/content/mint-your-ares-nft-bg.png");
   }
+  
+header .navbar-right .wallet-connect {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  
+  /* padding: 0;
+  list-style: none;
+  opacity: 1; */
+}
+
+header .navbar-right .wallet-connect li div button:hover,
+header .navbar-right .wallet-connect li div button.active {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+header .navbar-left .navbar-menu .wallet-connect-li {
+  display: none;
+  list-style: none;
+  opacity: 1;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+@media screen and (max-width: 1003px) {
+  header .navbar-right .wallet-connect {
+    display: none;
+  }
+  header .navbar-left .navbar-menu .wallet-connect-li {
+    display: block;
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+header .navbar-left .navbar-menu .wallet-connect-li div button {
+  color: #fff;
+  font-family: "ManifoldExtdCF-DemiBold";
+  font-weight: 600;
+  font-size: 13px;
+  padding: 0.63rem 0.94rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: none;
+}
+
+header .navbar-right .wallet-connect li div button {
+  
+  background: #dcb533;
+  color: #000;
+  font-family: "ManifoldExtdCF-DemiBold";
+  animation: skeleton-loading 3s linear;
+
+}
+
+@media screen and (min-width: 1004px) {
+  header .navbar-left .navbar-menu,
+  header .navbar-left .navbar-socials,
+  header .navbar-right .navbar-menu,
+  header .navbar-right .navbar-socials {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+}
+.modal-content .nft-form-bottom button {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  align-items: center;
+  border-radius: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 22px;
+  font-weight: 700;
+  height: 48px;
+  justify-content: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+.modal-content .nft-form-bottom button:disabled {
+  opacity: 0.5;
+}
+.modal-content .nft-form-top .nft-form-p button {
+  z-index: 100;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+}
+.modal-content .nft-form-top .nft-form-m button,
+.modal-content .nft-form-top .nft-form-p button {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #dcb533;
+  color: #fff;
+  font-size: 22px;
+  height: 48px;
+  -webkit-transition: background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+    color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+    border-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  transition: background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+    color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1),
+    border-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  width: 62px;
+}
+.modal-content .nft-form-top .nft-form-m button:focus,
+.modal-content .nft-form-top .nft-form-m button:hover,
+.modal-content .nft-form-top .nft-form-p button:focus,
+.modal-content .nft-form-top .nft-form-p button:hover {
+  background-color: #bc9820;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+.modal-content .nft-form-top .nft-form-m button:disabled,
+.modal-content .nft-form-top .nft-form-p button:disabled {
+  background-color: #bc9820;
+  opacity: 0.5;
+}
+.modal-content .nft-form-top .nft-form-m,
+.modal-content .nft-form-top .nft-form-value {
+  margin-right: 15px;
+}
+.glow-on-hover {
+  width: 220px;
+  height: 50px;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: #000
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+} 
+.border{
+  border: 2px solid rgb(164, 159, 159);
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 10px;
+}

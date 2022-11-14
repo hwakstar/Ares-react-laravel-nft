@@ -11,11 +11,14 @@ import Advantage from "./Advantage";
 import Dashboard from "./Dashboard";
 import Claim  from "./App";
 import { CleanConsole } from '@eaboy/clean-console';
+import { WagmiConfig } from "wagmi";
+import { wagmiClient } from "./config/wagmi";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <WagmiConfig client={wagmiClient}>
+       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />}>
             <Route index element={<Dashboard />} />
@@ -28,6 +31,7 @@ root.render(
         </Route>
       </Routes>
     </BrowserRouter>
+    </WagmiConfig>
   </React.StrictMode>
 );
 
