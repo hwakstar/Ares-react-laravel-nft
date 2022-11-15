@@ -21,11 +21,10 @@ import ConnectWalletModal from "./components/connectWallet/ConnectWalletModal";
 import { useAccount, useSigner } from "wagmi";
 import {getUserData, mint} from "./utils/web3Utils";
 import {CONTRACT_STATE} from "./config/constants";
-import {Alert} from "@mui/material";
 // import CookieConsent from "react-cookie-consent";
 export default function Dashboard() {
     const [modalState, setModalState] = useState(false);
-    const [mintAmount, setMintAmount] = useState(4)
+    const [mintAmount, setMintAmount] = useState(1)
     const [userData, setUserData] = useState(undefined)
     const [contractState, setContractState] = useState(0)
     const { address, isConnected } = useAccount()
@@ -397,10 +396,13 @@ export default function Dashboard() {
                             </p>
                             <div className="nft-form">
                             {
-                                        mintAmount > 2 && <Alert variant="filled" severity="error">
-                                            you cannot mint more than 3 nfts
-                                        </Alert>
+                                        mintAmount > 2 && <div class="alert">                                        
+                                        <strong>you cannot mint more than 3 nfts</strong>
+                                      
+                                      </div>
+                                      
                                     }
+
                                 <div className="nft-form-top">
                                     <div className="nft-form-m">
                                         <button onClick={reduceAmount}
@@ -412,13 +414,13 @@ export default function Dashboard() {
                                     </div>
                                     <div className="nft-form-value">
                                         <input id="nft-form-val" name="nft-form-val"
-                                            value={mintAmount}/>{" "}
+                                            value={mintAmount} style={{ pointerEvents: "none"}}/>{" "}
                                         NFT
                                     </div>
                                     <div className="nft-form-p">
                                         <button onClick={addAmount}
                                             disabled={
-                                                ! mintable
+                                                !mintable
                                         }>
                                             <i className="fa-solid fa-plus"></i>
                                         </button>
@@ -431,7 +433,7 @@ export default function Dashboard() {
                                         <button onClick={handleMint}
                                             className="btn btn-primary"
                                             disabled={
-                                                ! mintable
+                                                !mintable
                                         }>
                                             Mint
                                         </button>

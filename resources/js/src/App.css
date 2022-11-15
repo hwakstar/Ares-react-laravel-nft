@@ -227,8 +227,8 @@ header .navbar-right .wallet-connect li div button {
 }
 .modal-content .nft-form-top .nft-form-m button:disabled,
 .modal-content .nft-form-top .nft-form-p button:disabled {
-  background-color: #bc9820;
-  opacity: 0.5;
+  
+  opacity: 0.4;
 }
 .modal-content .nft-form-top .nft-form-m,
 .modal-content .nft-form-top .nft-form-value {
@@ -322,4 +322,25 @@ header .navbar-socials li a{
 header .navbar-right div button {
  
   animation: skeleton-loading 3s linear;
+}
+.alert {
+  padding: 20px;
+  background-color: #161515;
+  color: red
+  ;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
 }

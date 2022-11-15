@@ -166,11 +166,11 @@ export default function AresNFT() {
                                 members. Mint yours now!
                             </p>
                             <div className="nft-form">
-                                {mintAmount > 2 && (
-                                    <Alert variant="filled" severity="error">
-                                        you cannot mint more than 3 nfts
-                                    </Alert>
-                                )}
+                            {
+                                        mintAmount > 2 && <div class="alert">                                        
+                                        <strong>you cannot mint more than 3 nfts</strong>
+                                      </div>
+                                    }
                                 <div className="nft-form-top">
                                     <div className="nft-form-m">
                                         <button
@@ -185,6 +185,7 @@ export default function AresNFT() {
                                             id="nft-form-val"
                                             name="nft-form-val"
                                             value={mintAmount}
+                                            style={{ pointerEvents: "none"}}
                                         />{" "}
                                         NFT
                                     </div>
