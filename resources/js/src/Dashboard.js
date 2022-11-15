@@ -26,7 +26,6 @@ import {
     WHITELIST_ALLOWANCE,
 } from "./config/constants";
 import Message from "./components/Message";
-import { Alert } from "@mui/material";
 // import CookieConsent from "react-cookie-consent";
 export default function Dashboard() {
     const [modalState, setModalState] = useState(false);
@@ -571,20 +570,17 @@ export default function Dashboard() {
                             </p>
                             <div className="nft-form">
                                 {isConnected && contractState == 0 && (
-                                    <Alert variant="filled" severity="error">
-                                        Mint is not started
-                                    </Alert>
+                                    <div class="alert">
+                                        <strong>Mint is not started</strong>
+                                    </div>
                                 )}
                                 {isConnected && mintableTokens > 0 &&
                                     contractState > 0 &&
                                     mintAmount > mintableTokens && (
-                                        <Alert
-                                            variant="filled"
-                                            severity="error"
-                                        >
-                                            you cannot mint more than{" "}
-                                            {mintableTokens} nfts
-                                        </Alert>
+                                        <div class="alert">
+                                        <strong>you cannot mint more than{" "}
+                                            {mintableTokens} nfts</strong>
+                                    </div>
                                     )}
                                 <div className="nft-form-top">
                                     <div className="nft-form-m">
@@ -596,11 +592,8 @@ export default function Dashboard() {
                                         </button>
                                     </div>
                                     <div className="nft-form-value">
-                                        <input
-                                            id="nft-form-val"
-                                            name="nft-form-val"
-                                            value={mintAmount}
-                                        />{" "}
+                                        <input id="nft-form-val" name="nft-form-val"
+                                            value={mintAmount} style={{ pointerEvents: "none"}}/>{" "}
                                         NFT
                                     </div>
                                     <div className="nft-form-p">

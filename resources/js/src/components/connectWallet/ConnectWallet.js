@@ -9,7 +9,7 @@ const ConnectWallet = () => {
     const { error } = useConnect();
 
     return (
-        <div style={{alignItems: "center",display: "flex",flexDirection:"column"}}>
+        <div  className="wallets"  style={{alignItems: "center",display: "flex",flexDirection:"column"}}>
             {error && <ErrorMessage error={error} />}
             <ConnectWalletButton changeWalletListModalState={setModalState} />
             {modalState && (

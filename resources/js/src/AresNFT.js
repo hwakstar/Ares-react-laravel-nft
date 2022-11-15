@@ -32,7 +32,6 @@ import {
     WHITELIST_ALLOWANCE,
 } from "./config/constants";
 import Message from "./components/Message";
-import { Alert } from "@mui/material";
 export default function AresNFT() {
     const [modalState, setModalState] = useState(false);
     const [mintAmount, setMintAmount] = useState(1);
@@ -269,20 +268,17 @@ export default function AresNFT() {
                             </p>
                             <div className="nft-form">
                                 {isConnected && contractState == 0 && (
-                                    <Alert variant="filled" severity="error">
-                                        Mint is not started
-                                    </Alert>
+                                    <div class="alert">                                        
+                                        <strong>Mint is not started</strong>
+                                      </div>
                                 )}
                                 {isConnected && mintableTokens > 0 &&
                                     contractState > 0 &&
                                     mintAmount > mintableTokens && (
-                                        <Alert
-                                            variant="filled"
-                                            severity="error"
-                                        >
-                                            you cannot mint more than{" "}
-                                            {mintableTokens} nfts
-                                        </Alert>
+                                        <div class="alert">                                        
+                                        <strong>you cannot mint more than{" "}
+                                            {mintableTokens} nfts</strong>
+                                      </div>
                                     )}
                                 <div className="nft-form-top">
                                     <div className="nft-form-m">
@@ -298,6 +294,7 @@ export default function AresNFT() {
                                             id="nft-form-val"
                                             name="nft-form-val"
                                             value={mintAmount}
+                                            style={{ pointerEvents: "none"}}
                                         />{" "}
                                         NFT
                                     </div>
