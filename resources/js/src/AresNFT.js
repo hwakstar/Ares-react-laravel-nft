@@ -1828,7 +1828,7 @@ export default function AresNFT() {
                                         NFT will also be able to claim their
                                         free merchandise.
                                     </p>
-                                    <button onClick={claim} className="btn-fi">
+                                    <button onClick={claim} className="btn-fi" style={{cursor:"pointer"}}>
                                         <span className="btn-fi-line"></span>
                                         Claim
                                     </button>
