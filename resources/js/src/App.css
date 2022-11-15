@@ -350,11 +350,14 @@ header .navbar-right div button {
    {
     display: none;
 
+
   }
   header .wallets button{
     animation: skeleton-loading 3s linear;
     display:block;
-    width: 60%;
+    width: unset;
+    padding: 10px;
+    cursor: pointer;
   }
 
 
@@ -372,6 +375,5 @@ header .navbar-right div button{
   cursor: pointer;
 }
 .intro-s{
-background-image: "./images/content/img-1.jpg";
-  
+background-image: "./images/content";  
 }

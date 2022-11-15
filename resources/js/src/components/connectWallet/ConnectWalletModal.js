@@ -69,7 +69,7 @@ const ConnectWalletModal = (props) => {
        </button>
     
       <h1 style={{marginTop:"40px"}}>The New world Is Rising</h1>
-      <h6>If you don't have a wallet yet,select a provider and create one now.<br/>BE ONE OF US</h6>
+      <h6>If you don't have a wallet yet, select a provider and create one now.<br/>BE ONE OF US</h6>
       <List className="walletList" >
         {connectors.map((connector) => (
           <WalletListIndex 
