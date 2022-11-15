@@ -191,72 +191,7 @@ export default function Header(props) {
            
               
           </div>
-          {/* <ul className="navbar-socials" style={{visibility:"hidden", display:"flex",flexDirection:"inherit",listStyle:"none",marginTop:"20px",marginBottom:"-5px",alignItems:"center"}}>
-              <li>
-                <a href="https://twitter.com/CorpAres" target="_blank">
-                  <img src={Headerone} className="img-fluid" />
-                  
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.instagram.com/arescorporation/"
-                  target="_blank"
-                >
-                  <img src={Headertwo} className="img-fluid" />
-                 
-                </a>
-              </li>
-              <li>
-                <a href="https://discord.gg/36QvVQAYMA" target="_blank">
-                  <img src={Headerthree} className="img-fluid" />
-                  
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.youtube.com/channel/UCnukiavYKM0JaS6SFycV5wQ"
-                  target="_blank"
-                >
-                  <img src={Headerfour} className="img-fluid" />
-                  
-                </a>
-              </li>
-              <li>
-                <a href="https://vt.tiktok.com/ZSdu8dn2n/" target="_blank">
-                  <img src={Headerfive} className="img-fluid" />
-                 
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.linkedin.com/mwlite/in/ares-corporation-632786233"
-                  target="_blank"
-                >
-                  <img src={Headersix} className="img-fluid" />
-               
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.facebook.com/Arescorporationn"
-                  target="_blank"
-                >
-                  <img src={Headerseven} className="img-fluid" />
-                  
-                </a>
-              </li>
-              <li>
-                <a href="https://opensea.io/Ares-NFT" target="_blank">
-                  <img src={Headereight} className="img-fluid" />
-                 
-                </a>
-              </li>
-            </ul> */}
-          {/* <div className="navbar-social-mobile-top" style={{visibility:"hidden",position:"absolute",marginTop:"20px",backgroundColor:"black"}}>
-                    
-          </div> */}
-        </nav>
+         </nav>
       </div>
     </header>
   );
