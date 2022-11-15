@@ -18,7 +18,7 @@ import nftshape from "./images/content/mint-your-ares-nft-shape.png";
 import Header from "./components/Header";
 import React, {useState, useEffect, useCallback} from "react";
 import ConnectWalletModal from "./components/connectWallet/ConnectWalletModal";
-import {useWeb3React} from "@web3-react/core";
+import { useAccount, useSigner } from "wagmi";
 import {getUserData, mint} from "./utils/web3Utils";
 import {CONTRACT_STATE} from "./config/constants";
 import {Alert} from "@mui/material";
@@ -28,7 +28,8 @@ export default function Dashboard() {
     const [mintAmount, setMintAmount] = useState(4)
     const [userData, setUserData] = useState(undefined)
     const [contractState, setContractState] = useState(0)
-    const {account, library} = useWeb3React();
+    const { address, isConnected } = useAccount()
+    const { signer } = useSigner()
     const handleUserData = useCallback(async () => {
         const {
             status,
@@ -36,26 +37,26 @@ export default function Dashboard() {
             _constractState,
             _userBalance,
             _maxMintable
-        } = await getUserData(account, library ?. provider)
+        } = await getUserData(address, signer)
         if (status) {
             setUserData({whiteListed: _whiteListed, balance: Number(_userBalance), maxMintable: _maxMintable})
             setContractState(_constractState)
         }
     }, [
-        account, library
+        address, signer
     ],)
     useEffect(() => {
-        if (!account || !library) 
+        if (!address || !signer) 
             return
         
-        handleUserData(account, library)
+        handleUserData(address, signer)
         const timer = setInterval(() => {
-            handleUserData(account, library)
+            handleUserData(address, signer)
         }, 15000)
         return() => {
             clearInterval(timer)
         }
-    }, [account, library, handleUserData])
+    }, [address, signer, handleUserData])
     const connectWallet = () => {
         setModalState(true)
     }
@@ -69,13 +70,13 @@ export default function Dashboard() {
     const handleMint = async () => {
         let result
         if (userData && userData.whiteListed && userData.maxMintable - userData.balance > 0 && contractState === CONTRACT_STATE.WHITELIST) {
-            result = await mint(mintAmount, account, library.provider, CONTRACT_STATE.WHITELIST)
+            result = await mint(mintAmount, address, signer, CONTRACT_STATE.WHITELIST)
         }
         if (userData && userData.maxMintable - userData.balance > 0 && contractState === CONTRACT_STATE.PRESALE) {
-            result = await mint(mintAmount, account, library.provider, CONTRACT_STATE.PRESALE)
+            result = await mint(mintAmount, address, signer, CONTRACT_STATE.PRESALE)
         }
         if (userData && userData.maxMintable - userData.balance > 0 && contractState === CONTRACT_STATE.PUBLIC) {
-            result = await mint(mintAmount, account, library.provider, CONTRACT_STATE.PUBLIC)
+            result = await mint(mintAmount, address, signer, CONTRACT_STATE.PUBLIC)
         }
         console.log(result)
     }
@@ -426,7 +427,7 @@ export default function Dashboard() {
                                 </div>
                                 <div className="nft-form-bottom">
                                     {
-                                    account ? (
+                                    isConnected ? (
                                         <button onClick={handleMint}
                                             className="btn btn-primary"
                                             disabled={
