@@ -25,7 +25,7 @@ import {Alert} from "@mui/material";
 // import CookieConsent from "react-cookie-consent";
 export default function Dashboard() {
     const [modalState, setModalState] = useState(false);
-    const [mintAmount, setMintAmount] = useState(1)
+    const [mintAmount, setMintAmount] = useState(4)
     const [userData, setUserData] = useState(undefined)
     const [contractState, setContractState] = useState(0)
     const {account, library} = useWeb3React();
