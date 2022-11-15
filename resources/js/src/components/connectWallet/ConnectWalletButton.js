@@ -31,9 +31,9 @@ const ConnectWalletButton = (props) => {
     return (
         <>
             {isConnected ? (
-                <button className="btn-fi img-fluid" onClick={handleDisconnect} style={{margin:"11px"}}><span class="btn-fi-line"></span>{reduceAddress(address)}</button>
+                <button className="btn-fi img-fluid" onClick={handleDisconnect} ><span class="btn-fi-line"></span>{reduceAddress(address)}</button>
             ) : (
-                <button className="btn-fi img-fluid" onClick={openWalletListModal} style={{margin:"15px"}}><span class="btn-fi-line"></span>Connect your Wallet</button>
+                <button className="btn-fi img-fluid" onClick={openWalletListModal}><span class="btn-fi-line"></span><strong></strong>Connect your Wallet</button>
             )}
         </>
     );

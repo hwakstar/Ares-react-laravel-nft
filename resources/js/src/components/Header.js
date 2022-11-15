@@ -123,6 +123,8 @@ export default function Header(props) {
               </ul>
             </div>
           </div>
+          <div className="wals"><ConnectWallet /></div>
+          
           <div className="navbar-right">
             <ul className="navbar-socials">
               <li>
