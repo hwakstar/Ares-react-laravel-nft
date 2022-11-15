@@ -14,6 +14,7 @@
         "@eaboy/clean-console": "^1.0.4",
         "@emotion/react": "^11.10.5",
         "@emotion/styled": "^11.10.5",
+        "@ethersproject/contracts": "^5.7.0",
         "@ethersproject/providers": "^5.7.2",
         "@mui/material": "^5.10.13",
         "@testing-library/jest-dom": "^5.16.5",

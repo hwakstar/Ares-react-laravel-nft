@@ -200,7 +200,13 @@ export const abi = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "bool",
+				"name": "startMint_",
+				"type": "bool"
+			}
+		],
 		"name": "nextPhase",
 		"outputs": [],
 		"stateMutability": "nonpayable",
@@ -241,6 +247,13 @@ export const abi = [
 	{
 		"inputs": [],
 		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "resumeMinting",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -323,19 +336,6 @@ export const abi = [
 			}
 		],
 		"name": "setBaseURI",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "contractState_",
-				"type": "uint256"
-			}
-		],
-		"name": "setContractState",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -502,6 +502,20 @@ export const abi = [
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "startMinting",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "stopMinting",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -639,19 +653,6 @@ export const abi = [
 	},
 	{
 		"inputs": [],
-		"name": "contractState",
-		"outputs": [
-			{
-				"internalType": "enum AresNFT.ContractState",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "currentPhase",
 		"outputs": [
 			{
@@ -677,6 +678,19 @@ export const abi = [
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getContractState",
+		"outputs": [
+			{
+				"internalType": "enum AresNFT.ContractState",
+				"name": "_contractState",
+				"type": "uint8"
 			}
 		],
 		"stateMutability": "view",
@@ -808,6 +822,32 @@ export const abi = [
 	},
 	{
 		"inputs": [],
+		"name": "mintStartBlock",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "mintStarted",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "name",
 		"outputs": [
 			{
@@ -905,6 +945,19 @@ export const abi = [
 	{
 		"inputs": [],
 		"name": "publicAllowancePlusOne",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "publicPresaleAllowedBlocks",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -1137,6 +1190,19 @@ export const abi = [
 	{
 		"inputs": [],
 		"name": "whitelistAllowancePlusOne",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "whitelistAllowedBlocks",
 		"outputs": [
 			{
 				"internalType": "uint256",
