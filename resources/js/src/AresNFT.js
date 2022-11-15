@@ -1693,11 +1693,17 @@ export default function AresNFT() {
                                         NFT will also be able to claim their
                                         free merchandise.
                                     </p>
-                                    <a href="/claim" className="btn-fi">
+                                    {/* <a href="/claim" className="btn-fi">
                                         {" "}
                                         <span className="btn-fi-line"></span>
                                         Claim
-                                    </a>
+                                    </a> */}
+                                    <button onClick={connectWallet}
+                                            className="btn-fi">
+                                        <span className="btn-fi-line"></span>
+                                        Claim
+                                        </button>
+
                                 </div>
                             </div>
                         </div>
