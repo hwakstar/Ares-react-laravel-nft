@@ -199,7 +199,16 @@ header .navbar-right .wallet-connect li div button {
   display: flex;
   justify-content: center;
 }
-.modal-content .nft-form-top .nft-form-m button,
+.modal-content .nft-form-top .nft-form-m button{
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #dcb533;
+  color: #fff;
+  font-size: 22px;
+  height: 48px;
+   width: 62px;
+}
 .modal-content .nft-form-top .nft-form-p button {
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -216,8 +225,8 @@ header .navbar-right .wallet-connect li div button {
     border-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
   width: 62px;
 }
-.modal-content .nft-form-top .nft-form-m button:focus,
-.modal-content .nft-form-top .nft-form-m button:hover,
+/* .modal-content .nft-form-top .nft-form-m button:focus, */
+/* .modal-content .nft-form-top .nft-form-m button:hover, */
 .modal-content .nft-form-top .nft-form-p button:focus,
 .modal-content .nft-form-top .nft-form-p button:hover {
   background-color: #bc9820;

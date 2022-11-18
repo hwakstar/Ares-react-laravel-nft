@@ -10,11 +10,38 @@ import metamaskLogo from "../images/meta-mask.svg";
 import coinbaseLogo from "../images/coinbase.svg";
 import walletConnectLogo from "../images/wallet-connect.svg";
 
-const { chains, provider, webSocketProvider } = configureChains(defaultChains, [
-  infuraProvider({
-    apiKey: "fcbd5e4aded041b9bf226eb446608dd1",
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
+const bscTestnet = {
+  id: 97,
+  name: 'bscTestnet',
+  network: 'bscTestnet',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'bnb',
+    symbol: 'BNB',
+  },
+  rpcUrls: {
+    default: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+  },
+  blockExplorers: {
+    default: { name: 'bscscan', url: 'https://testnet.bscscan.com/' },
+  },
+  testnet: true,
+}
+
+const { chains, provider, webSocketProvider } = configureChains([
+  // defaultChains, 
+  bscTestnet], [
+  // infuraProvider({
+  //   apiKey: "fcbd5e4aded041b9bf226eb446608dd1",
+  // }),
+  // publicProvider(),
+  jsonRpcProvider({
+    rpc: (chain) => {
+      if (chain.id !== bscTestnet.id) return null
+      return { http: chain.rpcUrls.default }
+    },
   }),
-  publicProvider(),
 ]);
 
 export const connectors = [

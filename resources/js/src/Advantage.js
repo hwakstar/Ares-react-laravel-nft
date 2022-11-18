@@ -9,8 +9,8 @@ import Header from './components/Header';
 export default function Advantage() {
     return (
         <>
-     <div class="loading">
-        <div class="loading-logo"><img src={loader} class="img-fluid" alt="Ares Corporation" />
+     <div className="loading">
+        <div className="loading-logo"><img src={loader} className="img-fluid" alt="Ares Corporation" />
         </div>       
     </div>
     <Header advantage="active"/>

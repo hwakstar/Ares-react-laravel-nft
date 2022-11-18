@@ -10,7 +10,7 @@ import reportWebVitals from "./reportWebVitals";
 import Advantage from "./Advantage";
 import Dashboard from "./Dashboard";
 import Claim  from "./App";
-import { CleanConsole } from '@eaboy/clean-console';
+//import { CleanConsole } from '@eaboy/clean-console';
 import { WagmiConfig } from "wagmi";
 import { wagmiClient } from "./config/wagmi";
 
@@ -35,7 +35,7 @@ root.render(
   </React.StrictMode>
 );
 
-CleanConsole.init() // Dafault behavior
+//CleanConsole.init() // Dafault behavior
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

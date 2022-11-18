@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import gold from "./images/content/aresnft-coming-soon-gold.svg";
 import nft from "./images/content/the-rise-of-ares-nft.svg";
-import slider4 from "./images/content/ares-nft-slider-4.png";
 import page1 from "./images/content/ares-nft-page-1.png";
 import page2 from "./images/content/ares-nft-page-2.png";
 import page3 from "./images/content/ares-nft-page-3.png";
@@ -20,195 +19,261 @@ import Footer from "./components/Footer";
 import logo from "./images/content/logo.svg";
 import modaltilte from "./images/content/mint-your-ares-nft-title.svg";
 import nft1 from "./images/content/mint-your-ares-nft-1.png";
+
+
+import slider2 from "./images/content/ares-nft-slider-1.png";
+import slider1 from "./images/content/ares-nft-slider-2.png";
+import slider3 from "./images/content/ares-nft-slider-3.png";
+import slider4 from "./images/content/ares-nft-slider-4.png";
 import nftshape from "./images/content/mint-your-ares-nft-shape.png";
 import Header from "./components/Header";
 import loader from "./images/content/logo-loader.svg";
+import Snackbar from '@mui/material/Snackbar';
 import ConnectWalletModal from "./components/connectWallet/ConnectWalletModal";
 import { useAccount, useSigner } from "wagmi";
-import { getContractData, getUserData, mint } from "./utils/web3Utils";
+import { getContractData, getUserData, mint,getTransactionState } from "./utils/web3Utils";
 import {
     CONTRACT_STATE,
     PUBLIC_ALLOWANCE,
     WHITELIST_ALLOWANCE,
 } from "./config/constants";
+
+import { Alert } from "@mui/material";
 import Message from "./components/Message";
 export default function AresNFT() {
+    const [warnadd, setwarnadd] = useState(undefined);
     const [modalState, setModalState] = useState(false);
     const [mintAmount, setMintAmount] = useState(1);
     const [userData, setUserData] = useState(undefined);
     const [contractState, setContractState] = useState(0);
     const [remainTime, setRemainTime] = useState(0);
     const [message, setMessage] = useState(undefined);
+    const [claimmessage, setClaimMessage] = useState(undefined);
     const { address, isConnected } = useAccount();
     const { data: signer } = useSigner();
+    const [open, setOpen] = useState(false);
+    const [counters, setCounters] = useState(0);
+    const [currentPhase,setCurrentPhase]=useState();
+
+    const [alertMessage, setAlertMessage] = useState({
+        status: "success",
+        message: ""
+    })
     const handleUserData = useCallback(async () => {
-        const { status, _whiteListed, _userBalance, _userPhaseBalance } =
-            await getUserData(address, signer);
+        const {status, _whiteListed, _userBalance, _userPhaseBalance} = await getUserData(address, signer);
+
         if (status) {
-            setUserData({
-                whiteListed: _whiteListed,
-                balance: Number(_userBalance),
-                phaseBalance: Number(_userPhaseBalance),
-            });
+            setUserData({whiteListed: _whiteListed, balance: Number(_userBalance), phaseBalance: Number(_userPhaseBalance)});
         }
     }, [address, signer]);
     const handleContractData = useCallback(async () => {
-        const { status, _contractState, _remainTime } =
-            await getContractData();
-        if (status && _remainTime > 0) {
-            setContractState(_contractState);
+        const {status, _contractState, _remainTime,_currentPhase} = await getContractData();
+        if (status && _remainTime > 0 && counters == 0) {
             setRemainTime(_remainTime);
         }
+        setContractState(_contractState);
+        setCurrentPhase(_currentPhase);
     });
     useEffect(() => {
-        if (!address || !signer) return;
+        
+        if (!address || !signer) 
+            return;
+        
+
+
         handleUserData(address, signer);
         const timer = setInterval(() => {
             handleUserData(address, signer);
         }, 15000);
-        return () => {
+        return() => {
             clearInterval(timer);
         };
     }, [address, signer, handleUserData]);
+
     useEffect(() => {
+        handleContractData();
         const timer1 = setInterval(() => {
             handleContractData();
         }, 15000);
-        return () => {
+        return() => {
             clearInterval(timer1);
         };
     }, [handleContractData]);
+    const connectWallet = () => {
+        setModalState(true);
+    };
+    const mintableTokens = userData ? userData.whiteListed && contractState == 1 ? WHITELIST_ALLOWANCE - userData.phaseBalance : (contractState > 1 ? PUBLIC_ALLOWANCE - userData.phaseBalance : 0) : 0;
+
+    const fetchTransactionState = async (hash) => {
+        const contractState = await getTransactionState(hash)
+       
+        if (contractState == "success") {
+            setAlertMessage({
+                status: "success",
+                message: "Mint NFTs are successfully confirmed"
+            })
+            setOpen(true)
+        if (address && signer)  handleUserData(address, signer)
+        } else if (contractState == "failed") {
+            setAlertMessage({
+                status: "error",
+                message: "Mint failed"
+            })
+            setOpen(true)
+        } else if (contractState == "pending") {
+            setTimeout(() => {
+                fetchTransactionState(hash)
+            }, 1000)
+        }
+    }
+
+    useEffect(() => {
+        if (userData?.phaseBalance > 0) 
+        setMessage({type: "success", message: `You already minted ${userData.phaseBalance} NFTs`})
+}, [userData])
+const handleMint = async () => { 
+    if (contractState == CONTRACT_STATE.OFF) {
+        setMessage({type: "error", message: "Mint has not started"});
+        return;
+    }
+    if (userData && !userData.whiteListed && contractState == CONTRACT_STATE.WHITELIST) {
+        setMessage({type: "error", message: "You are not a whitelisted member"});
+        return;
+    }
+    if (userData && userData.whiteListed && contractState > CONTRACT_STATE.WHITELIST && userData?.phaseBalance == 0) {
+        setMessage({type: "warning", message: "whitlisted mint is closed"});
+    }
+    // else{
+    //     setMessage({
+    //         type: "error",
+    //         message:
+    //             "We are sorry to you that the mint for whitelisted members is closed",
+    //     });
+    // }
+
+    let result;
+    if (userData && userData.whiteListed && mintableTokens > 0 && contractState === CONTRACT_STATE.WHITELIST) {
+        result = await mint(mintAmount, address, signer, CONTRACT_STATE.WHITELIST);
+    }
+    if (userData && mintableTokens > 0 && contractState === CONTRACT_STATE.PRESALE) {
+        result = await mint(mintAmount, address, signer, CONTRACT_STATE.PRESALE);
+    }
+    if (userData && mintableTokens > 0 && contractState === CONTRACT_STATE.PUBLIC) {
+        result = await mint(mintAmount, address, signer, CONTRACT_STATE.PUBLIC);
+    }
+
+
+    if (result && result.status) {
+        fetchTransactionState(result.hash)
+    } else {
+        setAlertMessage({
+            status: "error",
+            message: "Mint failed"
+        })
+        setOpen(true)
+    }
+
+};
+
+    useEffect(() => {
+        if (remainTime > 0) setCounters(remainTime)
+      const interval = setInterval(() => {        
+        setCounters((prevCounter) => prevCounter > 0 ? prevCounter - 1 : 0);        
+        
+      
+      }, 1000);
+  
+      return () => clearInterval(interval);
+    }, [remainTime]);
+
+   
+   
     const claim = () => {
+       
         if (isConnected) {
             if (userData && !userData.whiteListed) {
-                setMessage({
+                
+                setClaimMessage({
                     type: "error",
                     message: "You are not a whitelisted member",
                 });
             }
-            if (userData && userData.whiteListed && !userData.balance) {
-                setMessage({
+            else if (userData && userData.whiteListed && !userData.balance) {
+                setClaimMessage({
                     type: "error",
                     message: "You need to have NFT to claim",
                 });
             }
+            else if(userData && userData.whiteListed && userData.balance){
+                window.location.href = "/claim";
+                                                                                                                                                                       
+            }
+
         } else {
             setModalState(true);
+           
         }
-    };
-    const mintableTokens =
-        userData
-            ? userData.whiteListed && contractState == 1
-                ? WHITELIST_ALLOWANCE - userData.phaseBalance
-                : ( contractState > 1 ? 
-                    PUBLIC_ALLOWANCE - userData.phaseBalance
-                    : 0
-                )
-            : 0;
-    const handleMint = async () => {
-        if (contractState == CONTRACT_STATE.OFF) {
-            setMessage({
-                type: "error",
-                message: "Mint is not started",
-            });
-            return;
-        }
-        if (
-            userData &&
-            !userData.whiteListed &&
-            contractState == CONTRACT_STATE.WHITELIST
-        ) {
-            setMessage({
-                type: "error",
-                message: "You are not a whitelisted member",
-            });
-            return;
-        }
-        if (
-            userData &&
-            userData.whiteListed &&
-            contractState > CONTRACT_STATE.WHITELIST
-        ) {
-            setMessage({
-                type: "error",
-                message:
-                    "We are sorry to announce you that the mint for whitelisted members is closed",
-            });
-        }
-        let result;
-        if (
-            userData &&
-            userData.whiteListed &&
-            mintableTokens > 0 &&
-            contractState === CONTRACT_STATE.WHITELIST
-        ) {
-            result = await mint(
-                mintAmount,
-                address,
-                signer,
-                CONTRACT_STATE.WHITELIST
-            );
-        }
-        if (
-            userData &&
-            mintableTokens > 0 &&
-            contractState === CONTRACT_STATE.PRESALE
-        ) {
-            result = await mint(
-                mintAmount,
-                address,
-                signer,
-                CONTRACT_STATE.PRESALE
-            );
-        }
-        if (
-            userData &&
-            mintableTokens > 0 &&
-            contractState === CONTRACT_STATE.PUBLIC
-        ) {
-            result = await mint(
-                mintAmount,
-                address,
-                signer,
-                CONTRACT_STATE.PUBLIC
-            );
-        }
-        if (result && result.state)
-            setMessage({
-                type: "success",
-                message: "Mint NFTs are successfully confirmed",
-            });
-    };
+    };    
+  
     const addAmount = () => {
-        if (mintAmount >= mintableTokens) return;
-        setMintAmount(mintAmount + 1);
+       
+        if (mintAmount >= mintableTokens) {
+            return;
+        }
+        
+        if (contractState === CONTRACT_STATE.WHITELIST) {
+            if (mintAmount <3) {
+                setMintAmount(mintAmount + 1);
+                if(mintAmount==2){ setwarnadd("you cannot mint more than 3 nfts ");}
+            } else {
+               
+            }
+        } else if (contractState === CONTRACT_STATE.PRESALE || contractState === CONTRACT_STATE.PUBLIC) {
+            if (mintAmount < 2) {
+                setMintAmount(mintAmount + 1);
+                setwarnadd("you cannot mint more than 2 nfts ");
+            } else {
+                setwarnadd("you cannot mint more than 2 nfts ");
+            }
+        }
     };
     const reduceAmount = () => {
-        if (mintAmount === 1) return;
+       if (mintAmount === 1) 
+        return;
         setMintAmount(mintAmount - 1);
+
+        if(mintAmount==2){
+            setwarnadd(undefined);
+        }       
+
     };
-    const connectWallet = () => {
-        setModalState(true);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
     };
-    const days = Math.floor(remainTime / 86400);
-    const hours = Math.floor((remainTime % 86400) / 3600);
-    const minutes = Math.floor((remainTime % 3600) / 60);
-    const seconds = remainTime % 60;
+
+   
+   
+    const handleClick = () => {
+        setOpen(true);
+    };
     return (
         <>
-            {message && (
-                <Message type={message.type} message={message.message} />
-            )}
+          
             {modalState && (
                 <ConnectWalletModal
                     changeWalletListModalState={setModalState}
                 />
             )}
-            <div class="loading">
-                <div class="loading-logo">
+            <div className="loading">
+                <div className="loading-logo">
                     <img
                         src={loader}
-                        class="img-fluid"
+                        className="img-fluid"
                         alt="Ares Corporation"
                     />
                 </div>
@@ -225,6 +290,23 @@ export default function AresNFT() {
                     </a>
                 </div>
                 <div className="modal-content">
+                <Snackbar open={open}
+                        autoHideDuration={6000}
+                        onClose={handleClose}
+                        anchorOrigin={
+                            {
+                                vertical: 'top',
+                                horizontal: 'center'
+                            }
+                    }>
+                        <Alert onClose={handleClose}
+                            severity={alertMessage.status}
+                            sx={
+                                {width: '100%'}
+                        }>
+                            {alertMessage.message}<br/>
+                        </Alert>
+                    </Snackbar>
                     <div className="modal-content-grid">
                         <div className="modal-content-grid-left">
                             <img src={logo} className="img-fluid" alt="ARES" />
@@ -233,32 +315,62 @@ export default function AresNFT() {
                                 className="title img-fluid"
                                 alt=""
                             />
-                            <div className="counter">
-                                <div className="counter-item">
+                           {(contractState==0||contractState==3)?
+                                     <div className="counter">
+                                     <div className="counter-item">
+                                             
+                                             <div>
+                                                 <h2>-</h2>
+                                                 <p>days</p>
+                                             </div>
+                                         </div>
+                                         <div className="counter-item">
+                                             <div>
+                                                 <h2>-</h2>
+                                                 <p>hours</p>
+                                             </div>
+                                         </div>
+                                         <div className="counter-item">
+                                             <div>
+                                                 <h2>-</h2>
+                                                 <p>mins</p>
+                                             </div>
+                                         </div>
+                                         <div className="counter-item">
+                                             <div>
+                                                 <h2>-</h2>
+                                                 <p>secs</p>
+                                             </div>
+                                         </div>
+                                                  </div>
+                                                  :
+                                     <div className="counter">
+                            <div className="counter-item">
+                                    
                                     <div>
-                                        <h2>{days}</h2>
+                                        <h2>{Math.floor(counters / 86400)}</h2>
                                         <p>days</p>
                                     </div>
                                 </div>
                                 <div className="counter-item">
                                     <div>
-                                        <h2>{hours}</h2>
+                                        <h2>{Math.floor((counters % 86400) / 3600)}</h2>
                                         <p>hours</p>
                                     </div>
                                 </div>
                                 <div className="counter-item">
                                     <div>
-                                        <h2>{minutes}</h2>
+                                        <h2>{Math.floor((counters % 3600) / 60)}</h2>
                                         <p>mins</p>
                                     </div>
                                 </div>
                                 <div className="counter-item">
                                     <div>
-                                        <h2>{seconds}</h2>
+                                        <h2>{counters % 60}</h2>
                                         <p>secs</p>
                                     </div>
                                 </div>
-                            </div>
+                                         </div>}
                             <p>
                                 Ares-NFT phase 1 will consist of rare, super
                                 rare and legendary NFTs, which is all determined
@@ -267,19 +379,31 @@ export default function AresNFT() {
                                 members. Mint yours now!
                             </p>
                             <div className="nft-form">
-                                {isConnected && contractState == 0 && (
-                                    <div class="alert">                                        
-                                        <strong>Mint is not started</strong>
-                                      </div>
-                                )}
+                            {
+                                warnadd && (
+                                    <Message type="error"
+                                        message={warnadd}/>
+                                )
+                            }
+                                {
+                                message && (
+                                    <Message type={
+                                            message.type
+                                        }
+                                        message={
+                                            message.message
+                                        }/>
+                                )
+                            }
+                          
                                 {isConnected && mintableTokens > 0 &&
                                     contractState > 0 &&
                                     mintAmount > mintableTokens && (
-                                        <div class="alert">                                        
+                                        <div className="alert">
                                         <strong>you cannot mint more than{" "}
                                             {mintableTokens} nfts</strong>
-                                      </div>
-                                    )}
+                                    </div>
+                                    )}         
                                 <div className="nft-form-top">
                                     <div className="nft-form-m">
                                         <button
@@ -329,12 +453,43 @@ export default function AresNFT() {
                             </div>
                         </div>
                         <div className="modal-content-grid-right">
-                            <img src={nft1} className="img-fluid" alt="" />{" "}
+                            {/* <img src={nft1} className="img-fluid" alt="" />{" "} */}
+                            {(currentPhase==0 || !currentPhase)&&
                             <img
-                                src={nftshape}
-                                className="img-fluid shape"
-                                alt=""
-                            />
+                            src={slider1}
+                            className="img-fluid"
+                            alt=""
+                        />
+                            }
+                              {currentPhase==1&&
+                            <img
+                            src={slider2}
+                            className="img-fluid"
+                            alt=""
+                        />
+                            }
+                              {currentPhase==2&&
+                            <img
+                            src={slider3}
+                            className="img-fluid"
+                            alt=""
+                        />
+                            }
+                              {currentPhase==3&&
+                            <img
+                            src={slider4}
+                            className="img-fluid"
+                            alt=""
+                        />
+                            }
+                              {currentPhase==4&&
+                            <img
+                            src={slider4}
+                            className="img-fluid"
+                            alt=""
+                        />
+                            }
+                            
                         </div>
                     </div>
                 </div>
@@ -1782,6 +1937,7 @@ export default function AresNFT() {
                     </section>
                     <section className="section section-spacing-bottom">
                         <div className="container">
+                       
                             <div className="row justify-content-center">
                                 <div className="col-lg-12 text-center">
                                     <h3 className="has-animation">
@@ -1800,6 +1956,7 @@ export default function AresNFT() {
                                 </div>
                             </div>
                             <div className="row mt-3">
+                 
                                 <div className="col-md-12 text-center">
                                     <div id="img-slider-perspective">
                                         <div id="drag-container">
@@ -1816,10 +1973,12 @@ export default function AresNFT() {
                             </div>
                             <div className="row justify-content-center mt-4">
                                 <div className="col-md-10 text-center">
+                               
                                     <h3>
                                         ONLY FOR WHITELISTED AND{" "}
                                         <b>ULTIMATE ARES NFT</b> HOLDER
                                     </h3>
+                                    {claimmessage && (<Alert  severity="error">{claimmessage.message}</Alert> )}
                                     <p className="lead">
                                         Whitelisted members can claim their free
                                         merchandise after purchasing their Ares
@@ -1832,6 +1991,7 @@ export default function AresNFT() {
                                         <span className="btn-fi-line"></span>
                                         Claim
                                     </button>
+                                   
                                 </div>
                             </div>
                         </div>

@@ -82,9 +82,9 @@ export default function App() {
   
     return (
         <>
-            <div class="loading">
-                <div class="loading-logo"><img src={loader}
-                        class="img-fluid"
+            <div className="loading">
+                <div className="loading-logo"><img src={loader}
+                        className="img-fluid"
                         alt="Ares Corporation"/>
                 </div>
             </div>
