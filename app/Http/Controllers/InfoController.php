@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Models\Info;
-use Vendors\PHPMailer\PHPMailer\PHPMailer;
-use Vendors\PHPMailer\PHPMailer\SMTP;
-use Vendors\PHPMailer\PHPMailer\Exception;
-
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class InfoController extends Controller
 {
@@ -36,17 +34,10 @@ class InfoController extends Controller
         $post->save();
         $clientmessage="Hi Welcome ! you have claimed sucessfully";
         $servermessage="Hi Shazane Nazaraly " .$name. " have claimed";
-         send_email($email,$name.$servermessage);
-         send_email($email,$name.$clientmessage);
+         $this->send_email($email,$name,$servermessage);
+         $this->send_email($email,$name,$clientmessage);
         return $servermessage;
-
-
-
-
-
-
-
-       
+      
       
     }
 
