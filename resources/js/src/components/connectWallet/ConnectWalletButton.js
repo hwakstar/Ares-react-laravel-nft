@@ -22,6 +22,7 @@ const ConnectWalletButton = (props) => {
 
     useEffect(() => {
         localStorage.setItem("ares-connected-wallet", "")
+        console.log(address);
     }, [isSuccess])
 
     const handleDisconnect = () => {
@@ -31,9 +32,9 @@ const ConnectWalletButton = (props) => {
     return (
         <>
             {isConnected ? (
-                <button className="btn-fi img-fluid" onClick={handleDisconnect} ><span className="btn-fi-line"></span>{reduceAddress(address)}</button>
+                <button className="btn-fi img-fluid" id="right" onClick={handleDisconnect} ><span className="btn-fi-line"></span>{reduceAddress(address)}</button>
             ) : (
-                <button className="btn-fi img-fluid" onClick={openWalletListModal}><span className="btn-fi-line"></span><strong></strong>Connect your Wallet</button>
+                <button className="btn-fi img-fluid" id="right" onClick={openWalletListModal}><span className="btn-fi-line"></span><strong></strong>Connect your Wallet</button>
             )}
         </>
     );

@@ -49,7 +49,7 @@ export default function Header(props) {
           </div>
           <div className="navbar-middle">
             <div className="navbar-middle-item">
-              <a href="#" className="nav-menu-toggle">
+              <a href="#" className="nav-menu-toggle" id="jhon">
                 <span></span>
                 <span></span>
               </a>
@@ -59,8 +59,8 @@ export default function Header(props) {
                 <img src={logo} className="img-fluid" alt="ARES" />
               </a>
             </div>
-            <div className="navbar-middle-item">
-              <a href="#" className="nav-socials-toggle">
+            <div className="navbar-middle-item" >
+              <a href="#" className="nav-socials-toggle" id="jhon">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -122,11 +122,13 @@ export default function Header(props) {
                 </li>
               </ul>
             </div>
+            
           </div>
+       
           <div className="wals"><ConnectWallet /></div>
           
-          <div className="navbar-right">
-            <ul className="navbar-socials">
+          <div className="navbar-right" >
+            <ul className="navbar-socials" >
               <li>
                 <a href="https://twitter.com/CorpAres" target="_blank">
                   <img src={Headerone} className="img-fluid" />

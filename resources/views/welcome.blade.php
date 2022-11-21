@@ -11,5 +11,26 @@
     <div id="root"></div>
    
     </body>
-    
+    <script>
+      
+      $(document).ready(function(){
+        var index="on";
+
+       $("#jhon").click(function(){
+     if(index=="on")
+          { $("#right").hide();
+              index="off";
+
+          }  
+      else
+      {
+        $("#right").show();
+        index="on";
+    }
+      
+  });
+ 
+
+});
+    </script>
 </html>

@@ -30,8 +30,7 @@ import {BSC_TESTNET_PROVIDER} from "./config/constants";
 import {CONTRACT_STATE, PUBLIC_ALLOWANCE, WHITELIST_ALLOWANCE} from "./config/constants";
 import Message from "./components/Message";
 import Alert from '@mui/material/Alert';
-import whitelist from "./images/whitelist.jpg";
-
+// import whitelist from "./images/whitelist.jpg";
 // import CookieConsent from "react-cookie-consent";
 export default function Dashboard() {
     const [counter, setCounter] = useState(0);
@@ -488,7 +487,10 @@ export default function Dashboard() {
                                     {" "} </div>
                             </div>
                         </div>
-                        <div className="modal-content-grid-right">
+                        <div className="modal-content-grid-right bk1">
+                        
+                        
+                            
                         {currentPhase==0&&
                             <img
                             src={slider1}
@@ -526,11 +528,11 @@ export default function Dashboard() {
                         />
                             }
                         
-                        <img
+                        {/* <img
                             src={whitelist}
                             className="img-fluid"
                             alt=""/>
-                        
+                         */}
                         </div>
                     </div>
                 </div>

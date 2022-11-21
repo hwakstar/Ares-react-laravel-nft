@@ -37,9 +37,10 @@ import {
     PUBLIC_ALLOWANCE,
     WHITELIST_ALLOWANCE,
 } from "./config/constants";
-
+import axios from "axios";
 import { Alert } from "@mui/material";
 import Message from "./components/Message";
+import { data } from "jquery";
 export default function AresNFT() {
     const [warnadd, setwarnadd] = useState(undefined);
     const [modalState, setModalState] = useState(false);
@@ -91,6 +92,7 @@ export default function AresNFT() {
     }, [address, signer, handleUserData]);
 
     useEffect(() => {
+        console.log(address);
         handleContractData();
         const timer1 = setInterval(() => {
             handleContractData();
@@ -188,8 +190,10 @@ const handleMint = async () => {
 
    
    
-    const claim = () => {
+    const claim = async (e) => {
        
+        e.preventDefault();                                                                                        
+  
         if (isConnected) {
             if (userData && !userData.whiteListed) {
                 
@@ -205,16 +209,45 @@ const handleMint = async () => {
                 });
             }
             else if(userData && userData.whiteListed && userData.balance){
-                window.location.href = "/claim";
-                                                                                                                                                                       
-            }
+                          // window.location.href = "/claim";             
+               
+               const res = await axios.post('/confirm',address).then(({data})=>{
+                    let count=0;
+                    console.log(data); 
+                    console.log(Object.keys(data[1]));
+                    data.map(function(data, idx) {
+                      console.log(data.walletaddress);
+                      if(data.walletaddress==address)
+                        count=count+1;
+                      console.log(count);
+                      setClaimMessage({
+                        type: "error",
+                        message: "You are already claim",
+                    });
+                     
+                    });
 
-        } else {
-            setModalState(true);
-           
+                    if(count==0)
+                    {
+                        window.location.href = "/claim";   
+                        
+                  }      
+              
+             // window.location.href = "/claim";      
+               }).catch(function (error) {
+                console.log(error);
+              });
+                                                               
+                    
+               
+            }
         }
+            else 
+            setModalState(true);
+                 
+       
     };    
-  
+
     const addAmount = () => {
        
         if (mintAmount >= mintableTokens) {

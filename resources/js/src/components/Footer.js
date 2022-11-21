@@ -14,29 +14,33 @@ export default function Footer() {
         <footer>
             <div className="container">
                 <div className="footer">
-                    
-                        <div className="footer-col-logo">
-                            <a href="/">
-                            <img
-                                src={footer}
+
+                    <div className="footer-col-logo">
+                        <a href="/">
+                            <img src={footer}
                                 className="img-fluid"
-                                alt="ARES"
-                            />
-                       </a>
+                                alt="ARES"/>
+                        </a>
                     </div>
+                     
                     <div className="footer-col-nav">
                         <ul>
                             <li>
-                                <a href="/about"> About us</a>
+                                <a href="/about">
+                                    About us</a>
                             </li>
                             <li>
-                                <a href="/edition"> Ares Edition</a>
+                                <a href="/edition">
+                                    Ares Edition</a>
                             </li>
                             <li>
-                                <a href="/aresnft"> Ares NFT </a>
+                                <a href="/aresnft">
+                                    Ares NFT
+                                </a>
                             </li>
                             <li>
-                                <a href="/investment"> Ares Investment</a>
+                                <a href="/investment">
+                                    Ares Investment</a>
                             </li>
                             <li>
                                 <a href="mailto:support@ares-corporation.com">
@@ -50,115 +54,21 @@ export default function Footer() {
                                     Partnership
                                 </a>
                             </li>
+                            
                         </ul>
+                      
                     </div>
 
                     <div className="footer-col-socials">
                         <ul>
-                            <li>
-                                <a
-                                    href="https://twitter.com/CorpAres"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footerone}
-                                        className="img-fluid"
-                                    />{" "}
-                                    Twitter{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://www.instagram.com/arescorporation/"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footertwo}
-                                        className="img-fluid"
-                                    />{" "}
-                                    Instagram{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://discord.gg/36QvVQAYMA"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footerthree}
-                                        className="img-fluid"
-                                    />{" "}
-                                    Discord{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://www.youtube.com/channel/UCnukiavYKM0JaS6SFycV5wQ"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footerfour}
-                                        className="img-fluid"
-                                    />{" "}
-                                    Youtube{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://vt.tiktok.com/ZSdu8dn2n/"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footerfive}
-                                        className="img-fluid"
-                                    />{" "}
-                                    TikTok{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://www.linkedin.com/mwlite/in/ares-corporation-632786233"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footersix}
-                                        className="img-fluid"
-                                    />
-                                    LinkedIn{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://www.facebook.com/Arescorporationn"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footerseven}
-                                        className="img-fluid"
-                                    />
-                                    Facebook{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="https://opensea.io/Ares-NFT"
-                                    target="_blank"
-                                >
-                                    {" "}
-                                    <img
-                                        src={footereight}
-                                        className="img-fluid"
-                                    />
-                                    Opensea{" "}
-                                </a>
-                            </li>
+                            <li><a href="https://twitter.com/CorpAres" target="_blank">{" "}<img src={footerone} className="img-fluid"/>{" "}Twitter{" "}</a></li>
+                            <li><a href="https://www.instagram.com/arescorporation/" target="_blank">{" "}<img src={footertwo} className="img-fluid"/>{" "}Instagram{" "}</a></li>
+                            <li><a href="https://discord.gg/36QvVQAYMA" target="_blank">{" "}<img src={footerthree} className="img-fluid"/>{" "}Discord{" "}</a></li>
+                            <li><a href="https://www.youtube.com/channel/UCnukiavYKM0JaS6SFycV5wQ" target="_blank">{" "}<img src={footerfour} className="img-fluid"/>{" "}Youtube{" "}</a></li>
+                            <li><a href="https://vt.tiktok.com/ZSdu8dn2n/" target="_blank">{" "}<img src={footerfive} className="img-fluid"/>{" "}TikTok{" "}</a></li>
+                            <li><a href="https://www.linkedin.com/mwlite/in/ares-corporation-632786233" target="_blank">{" "}<img src={footersix} className="img-fluid"/>LinkedIn{" "}</a></li>
+                            <li><a href="https://www.facebook.com/Arescorporationn" target="_blank">{" "}<img src={footerseven} className="img-fluid"/>Facebook{" "}</a></li>
+                            <li><a href="https://opensea.io/Ares-NFT" target="_blank">{" "}<img src={footereight} className="img-fluid"/>Opensea{" "}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -166,7 +76,13 @@ export default function Footer() {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12 text-center">
-                        <p>@2022 All Rights Reserved</p>
+                        <p>©
+                            Ares Corporation - 2022.
+                            The trademarks, NFTs, and the content appearing herein, is exclusively owned
+                            <br/>by Ares Corporation, and/or its licensors, and are protected. 
+                                                        Any unauthorized use or sale or reproduction<br/>
+                            or distribution, shall attract suitable action under applicable law.
+                        </p>
                     </div>
                 </div>
             </div>

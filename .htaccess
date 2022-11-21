@@ -2,5 +2,6 @@
     RewriteEngine On
     RewriteBase /
     RewriteRule ^$ public/index.php [L]
+	RewriteCond %{REQUEST_URI} !^/public/? [NC]
     RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
 </IfModule>

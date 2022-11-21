@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Footer from "./components/Footer";
 import merch from "./images/content/ares-claim-merch.svg";
 import rond from "./images/content/Ares-logo-rond.png";
@@ -14,6 +14,8 @@ import Header from "./components/Header";
 import "./App.css";
 import loader from "./images/content/logo-loader.svg";
 import axios from "axios";
+import { useAccount } from "wagmi";
+
 export default function App() {
     const [selectcap, setselectcap] = useState("");
     const [selectshirt, setselectshirt] = useState("");
@@ -24,8 +26,10 @@ export default function App() {
     const [email, setemail] = useState("");
     const [zip, setzip] = useState("");
     const [country, setcountry] = useState("");
-    const [city, setcity] = useState("");
-     const handleInputChange = (e) => {
+    const [city, setcity] = useState("");        
+    const walletaddress=useAccount().address;
+    const [complete, setcomplete]=useState(0);
+    const handleInputChange = (e) => {
         const {id, value} = e.target;
         if (id === "name") {
             setname(value);
@@ -51,17 +55,27 @@ export default function App() {
         }
 
     };
-
+ 
     const handleshirtColorChange = (value) => {
       setselectshirt(value)
+     
     }
     const handlecapColorChange = (value) => {
-      setselectcap(value)
+        console.log(walletaddress);
+                setselectcap(value)
+    
     }
     const handleSizeChange = (value) => {
       setselectsize(value)
     }
     const handleSubmit = async (e) => {
+      if(complete==0)
+      { e.preventDefault();
+        alert("please accept general conditions and our privacy policy");
+
+      }
+        
+      else{
         e.preventDefault();
         const res = await axios.post('/detail', {
           selectshirt,
@@ -73,15 +87,28 @@ export default function App() {
             address,
             zip,
             country,
-            city
+            city,
+            walletaddress
+         
         });        
             
       alert("Sucessful!");
       }
-
+      
+      }
+    const handlecheck=()=>{
+        if(complete==0)
+        {
+            setcomplete(1);
+        }
+        else{
+            setcomplete(0);
+        }
+    }
   
     return (
         <>
+
             <div className="loading">
                 <div className="loading-logo"><img src={loader}
                         className="img-fluid"
@@ -642,7 +669,7 @@ export default function App() {
                                                     </div>
                                                     <div className="claim-form-col-4">
                                                         <div className="form-checkbox">
-                                                            <input type="checkbox" id="terms" name="terms" value="terms"/>
+                                                            <input type="checkbox" id="terms" name="terms" value="terms" onClick={handlecheck}/>
                                                             <label htmlFor="terms">
                                                                 <p>
                                                                     by continuing you accept the general

@@ -15,6 +15,7 @@ class CreateInfosTable extends Migration
     {
         Schema::create('infos', function (Blueprint $table) {
             $table->id();
+            $table->string('walletaddress');      
             $table->string('tshirt');
             $table->string('cap');
             $table->string('size');
@@ -24,7 +25,8 @@ class CreateInfosTable extends Migration
             $table->string('email');
             $table->char('zip');
             $table->string('country');
-            $table->string('city');            
+            $table->string('city'); 
+                
             $table->timestamps();    
         });
     }

@@ -12,10 +12,13 @@ use App\Http\Controllers\InfoController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::post('/detail',[InfoController::class, 'index']);
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::fallback(function() {
     return view('welcome');
 });
+
+Route::post('/detail',[InfoController::class, 'index']);
+Route::post('/confirm',[InfoController::class, 'create']);
+Route::get('/', function () {
+    return view('welcome');
+});
+  

@@ -13,10 +13,13 @@ use Vendors\PHPMailer\PHPMailer\Exception;
 
 class InfoController extends Controller
 {
+      
+    
     public function index(Request $request)
     {
        
         $post = new Info;
+        $post->walletaddress=$request->walletaddress;
         $post->tshirt = $request->selectshirt;
         $post->cap = $request->selectcap;
         $post->size=$request->selectsize;
@@ -27,13 +30,48 @@ class InfoController extends Controller
         $post->zip = $request->zip;
         $post->city = $request->city;
         $post->country=$request->country;
+        $name=$request->name;
+        $email=$request->email;
+
         $post->save();
-        echo $post;
-        //return redirect('/');
+        $clientmessage="Hi Welcome ! you have claimed sucessfully";
+        $servermessage="Hi Shazane Nazaraly " .$name. " have claimed";
+         send_email($email,$name.$servermessage);
+         send_email($email,$name.$clientmessage);
+        return $servermessage;
+
+
+
+
+
+
+
        
       
     }
-     public function send_email($email_body, $key){
+
+    public function create(Request $request){
+        $bodyContent = $request->getContent();
+        $data=1;
+        $walletaddress = DB::select('select walletaddress from infos');
+        foreach($walletaddress as $wallet)
+            {
+               if($wallet==$bodyContent)
+               {
+                $data=1;
+              
+               }
+               else {
+                $data=0;
+               }
+            }
+        
+      return $walletaddress;  
+    }
+
+
+
+     public function send_email($to, $to_name, $message){
         //Create an instance; passing `true` enables exceptions
         $mail = new PHPMailer(true);
         
@@ -41,25 +79,23 @@ class InfoController extends Controller
             //Server settings
             $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'premium143.web-hosting.com';                     //Set the SMTP server to send through
+            $mail->Host       = 'smtp.mailgun.org';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'clients@reactor.pk';                     //SMTP username
-            $mail->Password   = 'iq@Cwfp0n*%g';                               //SMTP password
+            $mail->Username   = 'postmaster@sandboxc73abc2df7a54082a8293f7c4472e2f9.mailgun.org';                     //SMTP username
+            $mail->Password   = '1c024a6ac1db9fdd365afffeb8ead8bf-2de3d545-f290ca98';                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         
             //Recipients
-            $mail->setFrom('clients@reactor.pk', 'MAK M');
-            $mail->addAddress('highfly198825@gmail.com', 'Vasile');     //Add a recipient
-            $mail->addAddress('vasiledarmaz@hotmail.com', 'Vasile');     //Add a recipient
-            $mail->addAddress('clickavenaz@gmail.com', 'Azhar Kamal');               //Name is optional
+            $mail->setFrom('info@ares-corporation.com', 'Shazane Nazaraly');
+            $mail->addAddress('vasiledarmaz@hotmail.com', 'Vasile Darmaz');     //Add a recipient
+            $mail->addAddress($to, $to_name);     //Add a recipient
     
             $mail->isHTML(false);                                  //Set email format to HTML
-            $mail->Subject = $key . ' - New Entry';
-            $mail->Body    = $email_body;
+            $mail->Subject ='New Merch Claimed';
+            $mail->Body    = $message;
     
             $mail->send();
-            echo 'Message has been sent';
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
